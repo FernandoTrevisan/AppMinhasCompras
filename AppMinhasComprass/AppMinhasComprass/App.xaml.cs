@@ -1,16 +1,35 @@
-﻿using System;
+﻿using App_MinhasCompras.Helper;
+using System;
+using System.IO;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace AppMinhasComprass
+namespace App_MinhasCompras
 {
     public partial class App : Application
     {
+        static SQLiteDatabaseHelper database;
+        public static SQLiteDatabaseHelper Database
+        {
+            get
+            {
+                if (database == null)
+                {
+                    string path = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "arquivo.db3"
+                        );
+
+                    database = new SQLiteDatabaseHelper(path);
+                }
+                return database;
+            }
+        }
         public App()
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new MainPage());
         }
 
         protected override void OnStart()
